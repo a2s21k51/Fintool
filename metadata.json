@@ -1,0 +1,6 @@
+{
+  "name": "FinTools India",
+  "description": "Smart Financial & PDF Toolkit for India - EMI, SIP, Income Tax, GST, Mutual Funds, PDF Merge, Compress & Everyday Converters",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
