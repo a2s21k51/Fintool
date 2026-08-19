@@ -177,7 +177,7 @@ export function Footer() {
             <div className="w-8 h-8 rounded-full overflow-hidden border border-blue-500 shrink-0 relative">
               <Image
                 src="/founder.jpg"
-                alt="Founder Ashok Kumar"
+                alt="Founder A Kumar"
                 width={32}
                 height={32}
                 className="w-full h-full object-cover"
@@ -185,7 +185,7 @@ export function Footer() {
             </div>
             <div>
               <p className="font-semibold text-slate-200">
-                Crafted by Ashok Kumar <span className="text-blue-400 font-normal">(IIT Bhubaneswar)</span>
+                Crafted by A Kumar <span className="text-blue-400 font-normal">(IIT Bhubaneswar)</span>
               </p>
               <p className="text-[11px] text-slate-500">
                 © {new Date().getFullYear()} FinTools India. All rights reserved.

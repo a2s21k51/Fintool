@@ -20,7 +20,7 @@ export function FounderSection() {
                 <div className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-2xl bg-slate-100 dark:bg-slate-800">
                   <Image
                     src="/founder.jpg"
-                    alt="Ashok Kumar - Founder of FinTools.in"
+                    alt="A Kumar - Founder of FinTools.in"
                     fill
                     className="object-cover object-top hover:scale-105 transition-transform duration-300"
                     priority
@@ -36,7 +36,7 @@ export function FounderSection() {
 
               <div className="pt-3 space-y-1">
                 <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                  Ashok Kumar
+                  A Kumar
                 </h3>
                 <p className="text-xs font-semibold text-blue-600 dark:text-blue-400">
                   IIT Bhubaneswar Alumnus • FinTech Engineer
