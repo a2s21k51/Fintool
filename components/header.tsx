@@ -301,13 +301,14 @@ export function Header() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full text-slate-500 transition-colors cursor-pointer"
+              className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 transition-all cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
+              title={resolvedTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               aria-label="Toggle theme"
             >
               {resolvedTheme === 'dark' ? (
-                <Sun className="w-5 h-5 text-amber-400" />
+                <Sun className="w-5 h-5 text-amber-400 animate-in spin-in-180 duration-200" />
               ) : (
-                <Moon className="w-5 h-5 text-slate-600" />
+                <Moon className="w-5 h-5 text-slate-700 dark:text-slate-300 animate-in spin-in-180 duration-200" />
               )}
             </button>
 
@@ -451,16 +452,37 @@ export function Header() {
             )}
 
             {/* Quick Action Button for Mobile */}
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                setSearchOpen(true);
-              }}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold text-xs border border-slate-200 dark:border-slate-700"
-            >
-              <Search className="w-4 h-4 text-blue-600" />
-              <span>Search All 30+ Tools</span>
-            </button>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold text-xs border border-slate-200 dark:border-slate-700"
+              >
+                <Search className="w-3.5 h-3.5 text-blue-600" />
+                <span>Search</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold text-xs border border-slate-200 dark:border-slate-700 cursor-pointer"
+              >
+                {resolvedTheme === 'dark' ? (
+                  <>
+                    <Sun className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Light Mode</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
+                    <span>Dark Mode</span>
+                  </>
+                )}
+              </button>
+            </div>
 
             <div className="space-y-3 pt-2">
               <div className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">

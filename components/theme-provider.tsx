@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useSyncExternalStore } from 'react';
 
 type Theme = 'dark' | 'light' | 'system';
 
@@ -13,60 +13,53 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function subscribe(callback: () => void) {
+  window.addEventListener('storage', callback);
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  mediaQuery.addEventListener('change', callback);
+  return () => {
+    window.removeEventListener('storage', callback);
+    mediaQuery.removeEventListener('change', callback);
+  };
+}
+
+function getStoredSnapshot(): string {
+  if (typeof window === 'undefined') return 'light:system';
+  try {
+    const val = (localStorage.getItem('fintools_theme') as Theme) || 'system';
+    const isDark =
+      val === 'dark' ? true : val === 'light' ? false : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return `${isDark ? 'dark' : 'light'}:${val}`;
+  } catch {
+    return 'light:system';
+  }
+}
+
+function getServerSnapshot(): string {
+  return 'light:system';
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const stored = localStorage.getItem('fintools_theme') as Theme | null;
-        if (stored && (stored === 'dark' || stored === 'light' || stored === 'system')) {
-          return stored;
-        }
-      } catch {
-        // ignore
-      }
-    }
-    return 'system';
-  });
-  const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>('light');
+  const snapshot = useSyncExternalStore(subscribe, getStoredSnapshot, getServerSnapshot);
+  const [resolvedTheme, activeTheme] = snapshot.split(':') as ['dark' | 'light', Theme];
 
   useEffect(() => {
     const root = document.documentElement;
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const isDark = resolvedTheme === 'dark';
 
-    const applyTheme = () => {
-      let isDark = false;
-      if (theme === 'dark') {
-        isDark = true;
-      } else if (theme === 'light') {
-        isDark = false;
-      } else {
-        isDark = mediaQuery.matches;
-      }
-
-      setResolvedTheme(isDark ? 'dark' : 'light');
-      if (isDark) {
-        root.classList.add('dark');
-      } else {
-        root.classList.remove('dark');
-      }
-    };
-
-    applyTheme();
-
-    const listener = () => {
-      if (theme === 'system') {
-        applyTheme();
-      }
-    };
-
-    mediaQuery.addEventListener('change', listener);
-    return () => mediaQuery.removeEventListener('change', listener);
-  }, [theme]);
+    if (isDark) {
+      root.classList.add('dark');
+      document.body.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+      document.body.classList.remove('dark');
+    }
+  }, [resolvedTheme]);
 
   const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
     try {
       localStorage.setItem('fintools_theme', newTheme);
+      window.dispatchEvent(new Event('storage'));
     } catch {
       // ignore
     }
@@ -78,7 +71,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{
+        theme: activeTheme,
+        resolvedTheme,
+        setTheme,
+        toggleTheme,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );

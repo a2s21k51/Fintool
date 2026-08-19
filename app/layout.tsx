@@ -21,6 +21,27 @@ export const metadata: Metadata = {
   ],
 };
 
+const themeScript = `
+  (function() {
+    try {
+      var stored = localStorage.getItem('fintools_theme');
+      var isDark = false;
+      if (stored === 'dark') {
+        isDark = true;
+      } else if (stored === 'light') {
+        isDark = false;
+      } else {
+        isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (e) {}
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: {
@@ -28,6 +49,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-emerald-500 selection:text-white">
         <ThemeProvider>
           <Header />
