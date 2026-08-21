@@ -23,12 +23,14 @@ import {
   Layers,
   User,
   LogOut,
+  CreditCard,
 } from 'lucide-react';
 import { useTheme } from '@/components/theme-provider';
 import { GlobalSearchModal } from '@/components/global-search-modal';
 import { AuthModal } from '@/components/auth-modal';
 import { useFavorites } from '@/lib/storage';
 import { useCurrentUser, clearUserSession } from '@/lib/auth';
+import { useSubscription } from '@/lib/subscription';
 import { TOOLS } from '@/lib/tools-registry';
 
 export function Header() {
@@ -39,6 +41,7 @@ export function Header() {
   const [pdfMenuOpen, setPdfMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const currentUser = useCurrentUser();
+  const currentSub = useSubscription();
   const favorites = useFavorites();
   const favoriteCount = favorites.length;
   const { resolvedTheme, toggleTheme } = useTheme();
@@ -278,6 +281,22 @@ export function Header() {
               <Receipt className="w-3.5 h-3.5 text-blue-600" />
               <span>Tax Calculator</span>
             </Link>
+
+            {/* Subscription Plans Link */}
+            <Link
+              href="/pricing"
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                pathname === '/pricing'
+                  ? 'text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 shadow-2xs'
+                  : 'text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30'
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+              <span>Plans & Pricing</span>
+              <span className="hidden xl:inline-block text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded-full bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-100">
+                Save 37%
+              </span>
+            </Link>
           </nav>
 
           {/* Right Action Icons: Search Trigger, Theme Toggle, Mobile Menu */}
@@ -325,8 +344,12 @@ export function Header() {
                 <span className="hidden sm:inline text-xs font-bold text-slate-800 dark:text-slate-200 max-w-[110px] truncate">
                   {currentUser.name}
                 </span>
-                <span className="hidden md:inline-block px-1.5 py-0.2 rounded-sm text-[9px] font-extrabold uppercase tracking-wider bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
-                  Guest
+                <span className={`hidden md:inline-block px-1.5 py-0.2 rounded-sm text-[9px] font-extrabold uppercase tracking-wider ${
+                  currentSub.tier !== 'free'
+                    ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300'
+                    : 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+                }`}>
+                  {currentSub.tier !== 'free' ? currentSub.tier.toUpperCase() : 'Guest'}
                 </span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
               </button>
@@ -340,11 +363,30 @@ export function Header() {
                     <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
                       {currentUser.name}
                     </div>
-                    <div className="flex items-center gap-1.5 text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                      <span>Guest Mode Active</span>
+                    <div className="flex items-center justify-between gap-1 text-[11px]">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                        <span>Guest Mode</span>
+                      </span>
+                      <span className="font-bold text-slate-500 dark:text-slate-400 text-[10px]">
+                        {currentSub.planName}
+                      </span>
                     </div>
                   </div>
+
+                  <Link
+                    href="/pricing"
+                    onClick={() => setUserDropdownOpen(false)}
+                    className="w-full text-left p-2 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/40 text-xs font-semibold text-amber-800 dark:text-amber-300 transition-colors flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                      <span>{currentSub.tier === 'free' ? 'Upgrade to Pro' : 'Manage Subscription'}</span>
+                    </div>
+                    <span className="text-[9px] font-extrabold uppercase bg-amber-200 dark:bg-amber-900 px-1 py-0.2 rounded text-amber-900 dark:text-amber-100">
+                      37% Off
+                    </span>
+                  </Link>
 
                   <button
                     type="button"
@@ -400,7 +442,7 @@ export function Header() {
                   </div>
                   <div className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                    <span>Guest Mode Active</span>
+                    <span>{currentSub.planName}</span>
                   </div>
                 </div>
               </div>
@@ -415,6 +457,28 @@ export function Header() {
                 Settings
               </button>
             </div>
+
+            {/* Mobile Subscription Banner */}
+            <Link
+              href="/pricing"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-blue-500/15 border border-amber-300 dark:border-amber-700/80 flex items-center justify-between"
+            >
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">
+                    Subscription Plans (Monthly / Yearly)
+                  </div>
+                  <div className="text-[10px] text-amber-700 dark:text-amber-300 font-medium">
+                    Save 37% on Annual Billing
+                  </div>
+                </div>
+              </div>
+              <span className="px-2 py-1 rounded-lg bg-amber-500 text-slate-950 text-[10px] font-extrabold uppercase">
+                View
+              </span>
+            </Link>
 
             {/* Quick Action Button for Mobile */}
             <div className="grid grid-cols-2 gap-2">
