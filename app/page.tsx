@@ -39,6 +39,8 @@ import {
 import { GlobalSearchModal } from '@/components/global-search-modal';
 import { FounderSection } from '@/components/founder-section';
 import { PricingModal } from '@/components/pricing-modal';
+import { ToolIcon } from '@/components/tool-icon';
+import { AppIcon } from '@/components/app-icon';
 import { SUBSCRIPTION_PLANS, BillingCycle, SubscriptionTier, useSubscription } from '@/lib/subscription';
 
 export default function HomePage() {
@@ -581,21 +583,24 @@ function ToolCard({
           </div>
         </div>
 
-        {/* Title */}
-        <h3
-          className={`font-bold text-sm sm:text-base text-slate-900 dark:text-white transition-colors leading-snug ${
-            isPdf
-              ? 'group-hover:text-amber-600 dark:group-hover:text-amber-400'
-              : 'group-hover:text-blue-600 dark:group-hover:text-blue-400'
-          }`}
-        >
-          {tool.name}
-        </h3>
-
-        {/* Description */}
-        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
-          {tool.shortDesc || tool.description}
-        </p>
+        {/* Title and Icon */}
+        <div className="flex items-start gap-3">
+          <ToolIcon name={tool.icon} category={tool.category} size="sm" className="mt-0.5 shrink-0" />
+          <div>
+            <h3
+              className={`font-bold text-sm sm:text-base text-slate-900 dark:text-white transition-colors leading-snug ${
+                isPdf
+                  ? 'group-hover:text-amber-600 dark:group-hover:text-amber-400'
+                  : 'group-hover:text-blue-600 dark:group-hover:text-blue-400'
+              }`}
+            >
+              {tool.name}
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed mt-1">
+              {tool.shortDesc || tool.description}
+            </p>
+          </div>
+        </div>
 
         {/* Enterprise-grade feature tag for PDF */}
         {isPdf && (

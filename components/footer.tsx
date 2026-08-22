@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calculator, ShieldCheck, Heart, Sparkles, FileText, ArrowLeftRight, CreditCard } from 'lucide-react';
+import { AppIcon } from '@/components/app-icon';
 
 export function Footer() {
   return (
@@ -13,9 +14,7 @@ export function Footer() {
           {/* Col 1: Brand & Mission */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md">
-                <Calculator className="w-5 h-5" />
-              </div>
+              <AppIcon size="sm" showGlow />
               <span className="font-extrabold text-xl tracking-tight text-white">
                 FinTools<span className="text-blue-400">.in</span>
               </span>
@@ -233,6 +232,8 @@ export function Footer() {
                 width={32}
                 height={32}
                 className="w-full h-full object-cover"
+                unoptimized
+                referrerPolicy="no-referrer"
               />
             </div>
             <div>
