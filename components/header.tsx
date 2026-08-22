@@ -24,6 +24,7 @@ import {
   User,
   LogOut,
   CreditCard,
+  ShieldCheck,
 } from 'lucide-react';
 import { useTheme } from '@/components/theme-provider';
 import { GlobalSearchModal } from '@/components/global-search-modal';
@@ -297,6 +298,21 @@ export function Header() {
                 Save 37%
               </span>
             </Link>
+
+            {/* Security & Privacy Center Link */}
+            <Link
+              href="/security"
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                pathname === '/security'
+                  ? 'text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-700 shadow-2xs'
+                  : 'text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30'
+              }`}
+              title="100% Client-Side Privacy & Verified Security Certificates"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span className="hidden xl:inline">Security &</span>
+              <span>Privacy</span>
+            </Link>
           </nav>
 
           {/* Right Action Icons: Search Trigger, Theme Toggle, Mobile Menu */}
@@ -399,6 +415,15 @@ export function Header() {
                     <User className="w-3.5 h-3.5 text-blue-500" />
                     <span>Guest Profile & Settings</span>
                   </button>
+
+                  <Link
+                    href="/security"
+                    onClick={() => setUserDropdownOpen(false)}
+                    className="w-full text-left p-2 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-xs font-medium text-emerald-800 dark:text-emerald-300 transition-colors flex items-center gap-2 cursor-pointer"
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span>Trust, Privacy & Certificates</span>
+                  </Link>
 
                   <button
                     type="button"

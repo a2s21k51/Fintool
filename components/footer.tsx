@@ -193,8 +193,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="text-slate-400 hover:text-white transition-colors">
-                  100% Client-Side Privacy Seal
+                <Link href="/security" className="text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1 font-semibold">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Trust & Valid Certificates</span>
                 </Link>
               </li>
             </ul>
@@ -202,15 +203,24 @@ export function Footer() {
         </div>
 
         {/* Disclaimer Banner */}
-        <div className="py-6 border-b border-slate-800 text-xs text-slate-400 leading-relaxed">
-          <p className="font-medium text-slate-300 mb-1">
-            Disclaimer:
-          </p>
-          <p>
-            FinTools India provides calculation tools for informational and educational purposes only. 
-            Results are estimates and should not be considered financial, tax, legal, or investment advice. 
-            Tax rules, bank lending criteria, and market returns are subject to changes by relevant statutory authorities and financial institutions.
-          </p>
+        <div className="py-6 border-b border-slate-800 text-xs text-slate-400 leading-relaxed flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="max-w-3xl">
+            <p className="font-medium text-slate-300 mb-1">
+              Disclaimer & Privacy Mandate:
+            </p>
+            <p>
+              FinTools India provides calculation tools for informational and educational purposes only. 
+              All calculations and PDF document processing are executed strictly client-side inside your browser sandbox. 
+              No financial inputs, files, or telemetry are ever uploaded or stored on remote servers.
+            </p>
+          </div>
+          <Link
+            href="/security"
+            className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-bold border border-slate-700 transition-colors"
+          >
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <span>View 6 Valid Certificates</span>
+          </Link>
         </div>
 
         {/* Bottom Bar with Founder Info */}
@@ -234,15 +244,15 @@ export function Footer() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-5 sm:gap-6 flex-wrap">
             <Link href="/pricing" className="text-amber-400 hover:text-amber-300 font-bold transition-colors">
               Subscription Plans
             </Link>
-            <Link href="/" className="hover:text-white transition-colors">
-              Privacy Policy
+            <Link href="/security" className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors">
+              Security & Certificates
             </Link>
-            <Link href="/" className="hover:text-white transition-colors">
-              Terms of Service
+            <Link href="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy (DPDP)
             </Link>
             <a href="mailto:ak42@iitbbs.ac.in" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
               Contact Founder
