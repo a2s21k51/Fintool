@@ -1,28 +1,13 @@
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { MobileNav } from '@/components/mobile-nav';
-
-export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
-  ],
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-};
 
 export const metadata: Metadata = {
   title: 'FinTools India — Smart Financial Calculators & PDF Tools',
   description:
     'All-in-one financial calculators for India (EMI, SIP, Tax AY 25-26, FD, PPF, GST) and client-side PDF utilities (Merge, Compress, Split, Rotate). 100% private, free, and instant.',
-  icons: {
-    icon: '/app-icon.jpg',
-    apple: '/app-icon.jpg',
-  },
   keywords: [
     'EMI Calculator India',
     'SIP Calculator',
@@ -70,11 +55,10 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-emerald-500 selection:text-white">
         <ThemeProvider>
           <Header />
-          <div className="flex-1 w-full pb-16 md:pb-0">
+          <div className="flex-1 w-full">
             {children}
           </div>
           <Footer />
-          <MobileNav />
         </ThemeProvider>
       </body>
     </html>
